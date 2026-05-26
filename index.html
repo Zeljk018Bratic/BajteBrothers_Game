@@ -413,7 +413,15 @@ function loadState(){
   try{
     const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     if(typeof s.stars === 'number') stars = s.stars;
-    if(s.items && typeof s.items === 'object') items = Object.assign(items, s.items);
+    if(s.items && typeof s.items === 'object'){
+      items = {
+        ...items,
+        goldenKey: !!s.items.goldenKey,
+        superMagnet: !!s.items.superMagnet,
+        speedBoost: !!s.items.speedBoost,
+        shield: !!s.items.shield,
+      };
+    }
   }catch(e){}
 }
 
