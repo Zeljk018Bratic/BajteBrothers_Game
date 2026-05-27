@@ -248,6 +248,48 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);font-fam
       <div class="shop-price">120 ⭐</div>
       <button class="shop-btn" data-item="shield" data-cost="120">Kupi</button>
     </div>
+    <div class="shop-card" id="shopEngineAlex">
+      <div class="shop-icon">⚙️</div>
+      <div class="shop-name">Alex Motor+</div>
+      <div class="shop-desc">Povećava brzinu vozila (Alex)</div>
+      <div class="shop-price">150 ⭐</div>
+      <button class="shop-btn" data-item="engineAlex" data-cost="150">Kupi</button>
+    </div>
+    <div class="shop-card" id="shopOpticsAlex">
+      <div class="shop-icon">🔭</div>
+      <div class="shop-name">Alex Optika</div>
+      <div class="shop-desc">Povećava domet skupljanja (Alex)</div>
+      <div class="shop-price">120 ⭐</div>
+      <button class="shop-btn" data-item="opticsAlex" data-cost="120">Kupi</button>
+    </div>
+    <div class="shop-card" id="shopSkinAlex">
+      <div class="shop-icon">🎨</div>
+      <div class="shop-name">Alex Skin</div>
+      <div class="shop-desc">Nova boja i vizual za Alex</div>
+      <div class="shop-price">90 ⭐</div>
+      <button class="shop-btn" data-item="skinAlex" data-cost="90">Kupi</button>
+    </div>
+    <div class="shop-card" id="shopEngineKevin">
+      <div class="shop-icon">⚙️</div>
+      <div class="shop-name">Kevin Motor+</div>
+      <div class="shop-desc">Bolja ekonomija goriva (Kevin)</div>
+      <div class="shop-price">140 ⭐</div>
+      <button class="shop-btn" data-item="engineKevin" data-cost="140">Kupi</button>
+    </div>
+    <div class="shop-card" id="shopOpticsKevin">
+      <div class="shop-icon">🔭</div>
+      <div class="shop-name">Kevin Optika</div>
+      <div class="shop-desc">Povećava domet skupljanja (Kevin)</div>
+      <div class="shop-price">120 ⭐</div>
+      <button class="shop-btn" data-item="opticsKevin" data-cost="120">Kupi</button>
+    </div>
+    <div class="shop-card" id="shopSkinKevin">
+      <div class="shop-icon">🎨</div>
+      <div class="shop-name">Kevin Skin</div>
+      <div class="shop-desc">Nova boja i vizual za Kevin</div>
+      <div class="shop-price">90 ⭐</div>
+      <button class="shop-btn" data-item="skinKevin" data-cost="90">Kupi</button>
+    </div>
   </div>
   <button class="btn secondary" id="closeShopBtn">✖ ZATVORI</button>
 </div>
@@ -299,7 +341,11 @@ resize(); window.addEventListener('resize',resize);
 let state='intro', selectedChar='Alex', fuel=100, stars=0;
 let currentLevel=1, gameActive=false, rescued=false;
 let cageUnlocked=false, trickDone=false, levelComplete=false, actionPressed=false;
-let items={goldenKey:false,superMagnet:false,speedBoost:false,shield:false};
+let items={
+  goldenKey:false,superMagnet:false,speedBoost:false,shield:false,
+  engineAlex:false,opticsAlex:false,skinAlex:false,
+  engineKevin:false,opticsKevin:false,skinKevin:false
+};
 
 const STORAGE_KEY='bajtebrothers_save_v1';
 
@@ -320,7 +366,9 @@ function loadProgress(){
         goldenKey:!!data.items.goldenKey,
         superMagnet:!!data.items.superMagnet,
         speedBoost:!!data.items.speedBoost,
-        shield:!!data.items.shield
+        shield:!!data.items.shield,
+        engineAlex:!!data.items.engineAlex,opticsAlex:!!data.items.opticsAlex,skinAlex:!!data.items.skinAlex,
+        engineKevin:!!data.items.engineKevin,opticsKevin:!!data.items.opticsKevin,skinKevin:!!data.items.skinKevin
       };
     }
   }catch(e){}
@@ -351,6 +399,8 @@ const LEVELS={
   5:{name:'Oaza',emoji:'🦜',trick:'echo',mapTheme:'city',desc:'Ptica šapće tajnu o super kavezu.\nPronađi ga prije Trapavka!'},
   6:{name:'Finale',emoji:'👶',trick:'chase',mapTheme:'dark',desc:'SPASI DIJETE i postani najveći heroj!\nPreduhitri Trapavka — trči!'},
   7:{name:'Larinina Noć',emoji:'🌙',trick:'night',mapTheme:'dark',desc:'LARA\'S SPECIAL: Spasi sve životinje u ponoći!\nBrž si u mraku — pokazat ćeš Trapavku!'},
+  8:{name:'Pustinjska Oluja',emoji:'🦂',trick:'sand',mapTheme:'snow',desc:'Pustinjska oluja otežava vidljivost — koristi optiku!\nOprez: padaju pijesak i zamke.'},
+  9:{name:'Tvornica',emoji:'🏭',trick:'machinery',mapTheme:'city',desc:'Meke platforme i pokretne trake — brzina i kontrola su ključ.'},
 };
 const MAX_LEVEL=Object.keys(LEVELS).length;
 
@@ -716,6 +766,10 @@ function drawCage(){
 // ── PLAYER ────────────────────────────────────────────────────────────
 function drawPlayer(){
   let ch=CHARS[selectedChar];
+  // skin overrides (cosmetic)
+  let bodyColor=ch.color, bodyColor2=ch.color2;
+  if(selectedChar==='Alex' && items.skinAlex){ bodyColor='#ffd1a6'; bodyColor2='#ffb84d'; }
+  if(selectedChar==='Kevin' && items.skinKevin){ bodyColor='#a6d4ff'; bodyColor2='#5fb0ff'; }
   let wobble=Math.abs(player.speed)>.5?Math.sin(tick*.018)*2:0;
   ctx.save();ctx.translate(player.x,player.y+wobble);ctx.rotate(player.angle);
 
@@ -733,7 +787,7 @@ function drawPlayer(){
   }
 
   // Body — cab
-  let cg=ctx.createLinearGradient(-20,-16,20,18);cg.addColorStop(0,ch.color2);cg.addColorStop(1,ch.color);
+  let cg=ctx.createLinearGradient(-20,-16,20,18);cg.addColorStop(0,bodyColor2);cg.addColorStop(1,bodyColor);
   ctx.fillStyle=cg;ctx.beginPath();ctx.roundRect(-20,-14,40,30,7);ctx.fill();
   ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(-20,-14,40,30,7);ctx.stroke();
 
@@ -911,9 +965,15 @@ function update(){
 
   // ── MOVEMENT: intuitive 8-direction (keyboard) + tank (joystick) ──
   let ch=CHARS[selectedChar];
-  let maxSpd=ch.maxSpeed*(items.speedBoost&&selectedChar==='Alex'?1.45:1);
+  // base speed with possible engine upgrades
+  let maxSpd=ch.maxSpeed;
+  if(items.speedBoost && selectedChar==='Alex') maxSpd*=1.45;
+  if(selectedChar==='Alex' && items.engineAlex) maxSpd*=1.28; // Alex engine upgrade
   if(selectedChar==='Lara' && comboMode) maxSpd*=1.18;
   let acc=ch.acc;
+  // fuel multiplier (Kevin engine improves economy locally)
+  let fuelMul=ch.fuelMul;
+  if(selectedChar==='Kevin' && items.engineKevin) fuelMul*=0.78;
 
   if(stickOn){
     // Joystick: tank steering (rotate + throttle)
@@ -974,7 +1034,7 @@ function update(){
 
   // Fuel
   if(Math.abs(player.speed)>.15){
-    let con=.038*ch.fuelMul*(items.shield ? 0.5 : 1);
+  let con=.038*fuelMul*(items.shield ? 0.5 : 1);
     fuel=Math.max(0,fuel-con);
     if(fuel<=0){gameActive=false;setTimeout(showGameOver,500);return;}
     if(comboMode){comboTimer--; if(comboTimer<=0){comboMode=false;showMsg('Fusion završio! Vratili ste se u normalu.',2200);updateHUD();}}
@@ -982,6 +1042,8 @@ function update(){
   }
 
   let mRange=items.superMagnet?105:(currentLevel<=2?58:38);
+  // optics upgrade increases pickup radius for Alex/Kevin
+  if((selectedChar==='Alex' && items.opticsAlex) || (selectedChar==='Kevin' && items.opticsKevin)) mRange+=40;
 
   // Collect barrels
   barrels.forEach(b=>{
@@ -1148,6 +1210,17 @@ function openShop(){
     let btn=card?.querySelector('.shop-btn');
     if(v){card?.classList.add('owned');if(btn){btn.textContent='✅ Imaš';btn.classList.add('owned');btn.disabled=true;}}
   });
+  // mark our new items
+  const extraOwnedMap={engineAlex:items.engineAlex,opticsAlex:items.opticsAlex,skinAlex:items.skinAlex,engineKevin:items.engineKevin,opticsKevin:items.opticsKevin,skinKevin:items.skinKevin};
+  const extraIds={engineAlex:'shopEngineAlex',opticsAlex:'shopOpticsAlex',skinAlex:'shopSkinAlex',engineKevin:'shopEngineKevin',opticsKevin:'shopOpticsKevin',skinKevin:'shopSkinKevin'};
+  Object.entries(extraOwnedMap).forEach(([k,v])=>{
+    let card=document.getElementById(extraIds[k]);
+    let btn=card?card.querySelector('.shop-btn'):null;
+    if(v){
+      if(card) card.classList.add('owned');
+      if(btn){btn.textContent='✅ Imaš';btn.classList.add('owned');btn.disabled=true;}
+    }
+  });
   showShopHint();
   document.getElementById('shopScreen').style.display='flex';
 }
@@ -1200,7 +1273,11 @@ document.querySelectorAll('.shop-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     if(btn.disabled)return;
     let item=btn.dataset.item,cost=+btn.dataset.cost;
-    let keyMap={key:'goldenKey',magnet:'superMagnet',speed:'speedBoost',shield:'shield'};
+    let keyMap={
+      key:'goldenKey',magnet:'superMagnet',speed:'speedBoost',shield:'shield',
+      engineAlex:'engineAlex',opticsAlex:'opticsAlex',skinAlex:'skinAlex',
+      engineKevin:'engineKevin',opticsKevin:'opticsKevin',skinKevin:'skinKevin'
+    };
     let k=keyMap[item];
     if(stars>=cost&&!items[k]){
       stars-=cost;items[k]=true;saveProgress();updateHUD();
