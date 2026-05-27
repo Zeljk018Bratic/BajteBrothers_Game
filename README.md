@@ -322,6 +322,19 @@ Nešto bi moglo biti bolje? Otvori **Issue** ili **Pull Request** na GitHubu:
 💜 LARA SPECIJALIZACIJA — Zvjezdica bonus
 ```
 
+## 🔧 Novi sadržaj — verzija 3.x
+
+- Dodano 2 nova, teža nivoa:
+   - **Nivo 8 — Pustinjska Oluja (🦂)**: smanjena vidljivost, pokretne zamke i pijesak; preporučena optika.
+   - **Nivo 9 — Tvornica (🏭)**: mehaničke trake i pomični elementi; zahtijeva preciznu kontrolu i bolju brzinu.
+
+- Vozilo i customization za Alex i Kevina:
+   - **Motor (engine)**: tehnička nadogradnja koja povećava brzinu (Alex) ili smanjuje potrošnju goriva (Kevin).
+   - **Optika (optics)**: povećava domet skupljanja zvjezdica i goriva (korisno u pustinji i tamnim zonama).
+   - **Skin**: vizualni izgled vozila (boje) — čisto kozmetički.
+
+Sve nadogradnje dostupne su u `🏪 Bajte Shop` i pamte se u lokalnom storageu.
+
 ---
 
 ## 🎮 Zašto Je Ovo Igrica?

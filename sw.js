@@ -55,3 +55,10 @@ self.addEventListener('fetch', event => {
     );
   }
 });
+
+/* Message handler: prevent async response channel issues */
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
