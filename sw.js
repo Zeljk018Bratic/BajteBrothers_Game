@@ -43,7 +43,6 @@ self.addEventListener('fetch', event => {
           }
           return response;
         }).catch(() => {
-          if (cached) return cached;
           return new Response('Offline – please reconnect', { status: 503, statusText: 'Offline' });
         });
       })
@@ -56,7 +55,7 @@ self.addEventListener('fetch', event => {
   }
 });
 
-/* Message handler: prevent async response channel issues */
+/* Message handler: skip waiting */
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
